@@ -1,6 +1,10 @@
 package compare
 
-import "github.com/corona10/goimagehash"
+import (
+	"image"
+
+	"github.com/corona10/goimagehash"
+)
 
 var DefaultImageRange = 0.15
 
@@ -34,4 +38,27 @@ func ImageHash(img1, img2 Image, checkSize bool) (int, bool) {
 
 func ImageHashWithRange(img1, img2 Image, limit float64) (int, bool) {
 	return imageHash(img1, img2, true, limit)
+}
+
+var _ Image = &img{}
+
+type img struct {
+	height, width int
+	hash          *goimagehash.ExtImageHash
+}
+
+func (i *img) Height() int                     { return i.height }
+func (i *img) Width() int                      { return i.width }
+func (i *img) Hash() *goimagehash.ExtImageHash { return i.hash }
+
+func NewImage(i image.Image, fn func(image.Image) image.Image) Image {
+	if i == nil {
+		panic("Image object can not be nil")
+	}
+	bounds := i.Bounds()
+	if fn != nil {
+		i = fn(i)
+	}
+	hash, _ := goimagehash.ExtPerceptionHash(i, 32, 32)
+	return &img{bounds.Dx(), bounds.Dy(), hash}
 }
