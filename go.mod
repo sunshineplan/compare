@@ -3,7 +3,7 @@ module github.com/sunshineplan/compare
 go 1.17
 
 require (
-	github.com/corona10/goimagehash v1.0.3
+	github.com/corona10/goimagehash v1.1.0
 	github.com/sergi/go-diff v1.2.0
 )
 
