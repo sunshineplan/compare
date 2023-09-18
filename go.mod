@@ -1,6 +1,6 @@
 module github.com/sunshineplan/compare
 
-go 1.17
+go 1.21.0
 
 require (
 	github.com/corona10/goimagehash v1.1.0
